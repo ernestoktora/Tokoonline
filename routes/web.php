@@ -25,8 +25,6 @@ Route::post('backend/logout', [LoginController::class, 'logoutBackend'])
 
 // Route::resource('backend/user', UserController::class)->middleware('auth');
 
-Route::resource('backend/user', UserController::class, ['as' => 'backend'])
-    ->middleware('auth');
-
-Route::resource('user', UserController::class);
-Route::resource('user', UserController::class, ['as' => 'backend']);
+Route::resource('backend/user', UserController::class, [
+    'as' => 'backend'
+])->middleware('auth');
