@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-12">
-        <a href="{{ route('backend.user.create') }}">
+        <a href="{{ route('backend.produk.create') }}">
             <button type="button" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Tambah
             </button>
@@ -20,54 +20,51 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Email</th>
-                                <th>Nama</th>
-                                <th>Role</th>
+                                <th>Kategori</th>
                                 <th>Status</th>
+                                <th>Nama Produk</th>
+                                <th>Harga</th>
+                                <th>Stok</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($users as $row)
+                            @foreach ($index as $row)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $row->email }}</td>
-                                    <td>{{ $row->nama }}</td>
-                                    <td>
-                                        @if ($row->role == 1)
-                                            <span class="badge badge-success">Super Admin</span>
-                                        @else
-                                            <span class="badge badge-info">Admin</span>
-                                        @endif
-                                    </td>
-
+                                    <td>{{ $row->kategori->nama_kategori ?? '-' }}</td>
                                     <td>
                                         @if ($row->status == 1)
-                                            <span class="badge badge-success">Aktif</span>
+                                            <span class="badge badge-success">Publish</span>
                                         @else
-                                            <span class="badge badge-secondary">Nonaktif</span>
+                                            <span class="badge badge-secondary">Blok</span>
                                         @endif
                                     </td>
-
+                                    <td>{{ $row->nama_produk }}</td>
+                                    <td>Rp. {{ number_format($row->harga, 0, ',', '.') }}</td>
+                                    <td>{{ $row->stok }}</td>
                                     <td>
-                                        <a href="{{ route('backend.user.edit', $row->id) }}"
-                                            title="Ubah Data">
-                                            <button type="button"
-                                                class="btn btn-cyan btn-sm">
+                                        <a href="{{ route('backend.produk.edit', $row->id) }}" title="Ubah Data">
+                                            <button type="button" class="btn btn-cyan btn-sm">
                                                 <i class="far fa-edit"></i> Ubah
                                             </button>
                                         </a>
 
-                                        <form action="{{ route('backend.user.destroy', $row->id) }}"
-                                            method="post"
-                                            style="display:inline-block;">
+                                        <a href="{{ route('backend.produk.show', $row->id) }}" title="Gambar Produk">
+                                            <button type="button" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-plus"></i> Gambar
+                                            </button>
+                                        </a>
+
+                                        <form method="POST"
+                                            action="{{ route('backend.produk.destroy', $row->id) }}"
+                                            style="display: inline-block;">
                                             @method('delete')
                                             @csrf
-
                                             <button type="submit"
                                                 class="btn btn-danger btn-sm show_confirm"
-                                                data-konf-delete="{{ $row->nama }}"
+                                                data-konf-delete="{{ $row->nama_produk }}"
                                                 title="Hapus Data">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
