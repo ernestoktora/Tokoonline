@@ -10,23 +10,25 @@
             <div class="card">
 
                 <form class="form-horizontal"
-                    action="{{ route('backend.user.store') }}"
+                    action="{{ route('backend.user.update', $user->id) }}"
                     method="POST"
                     enctype="multipart/form-data">
 
                     @csrf
+                    @method('PUT')
 
                     <div class="card-body">
-
                         <h4 class="card-title">{{ $judul }}</h4>
 
                         <div class="row">
-
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Foto</label>
 
-                                    <img class="foto-preview" alt="Preview Foto" style="max-width: 200px; display: none; margin-bottom: 10px;">
+                                    <img class="foto-preview"
+                                        src="{{ $user->foto ? asset('storage/img-user/' . $user->foto) : asset('backend/images/users/1.jpg') }}"
+                                        alt="Preview Foto"
+                                        style="max-width: 200px; display: block; margin-bottom: 10px;">
 
                                     <input type="file"
                                         name="foto"
@@ -43,31 +45,46 @@
                             </div>
 
                             <div class="col-md-8">
-
                                 <div class="form-group">
                                     <label>Hak Akses</label>
 
                                     <select name="role"
                                         class="form-control @error('role') is-invalid @enderror">
-
-                                        <option value=""
-                                            {{ old('role') == '' ? 'selected' : '' }}>
+                                        <option value="" {{ old('role', $user->role) == '' ? 'selected' : '' }}>
                                             - Pilih Hak Akses -
                                         </option>
-
-                                        <option value="1"
-                                            {{ old('role') == '1' ? 'selected' : '' }}>
+                                        <option value="1" {{ old('role', $user->role) == '1' ? 'selected' : '' }}>
                                             Super Admin
                                         </option>
-
-                                        <option value="0"
-                                            {{ old('role') == '0' ? 'selected' : '' }}>
+                                        <option value="0" {{ old('role', $user->role) == '0' ? 'selected' : '' }}>
                                             Admin
                                         </option>
-
                                     </select>
 
                                     @error('role')
+                                        <span class="invalid-feedback alert-danger" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Status</label>
+
+                                    <select name="status"
+                                        class="form-control @error('status') is-invalid @enderror">
+                                        <option value="" {{ old('status', $user->status) == '' ? 'selected' : '' }}>
+                                            - Pilih Status -
+                                        </option>
+                                        <option value="1" {{ old('status', $user->status) == '1' ? 'selected' : '' }}>
+                                            Aktif
+                                        </option>
+                                        <option value="0" {{ old('status', $user->status) == '0' ? 'selected' : '' }}>
+                                            Nonaktif
+                                        </option>
+                                    </select>
+
+                                    @error('status')
                                         <span class="invalid-feedback alert-danger" role="alert">
                                             {{ $message }}
                                         </span>
@@ -79,7 +96,7 @@
 
                                     <input type="text"
                                         name="nama"
-                                        value="{{ old('nama') }}"
+                                        value="{{ old('nama', $user->nama) }}"
                                         class="form-control @error('nama') is-invalid @enderror"
                                         placeholder="Masukkan Nama">
 
@@ -95,7 +112,7 @@
 
                                     <input type="text"
                                         name="email"
-                                        value="{{ old('email') }}"
+                                        value="{{ old('email', $user->email) }}"
                                         class="form-control @error('email') is-invalid @enderror"
                                         placeholder="Masukkan Email">
 
@@ -111,7 +128,7 @@
 
                                     <input type="text"
                                         name="hp"
-                                        value="{{ old('hp') }}"
+                                        value="{{ old('hp', $user->hp) }}"
                                         onkeypress="return hanyaAngka(event)"
                                         class="form-control @error('hp') is-invalid @enderror"
                                         placeholder="Masukkan Nomor HP">
@@ -123,80 +140,50 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label>Password</label>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <input type="password"
-                                        name="password"
-                                        class="form-control @error('password') is-invalid @enderror"
-                                        placeholder="Masukkan Password">
+                    <div class="border-top">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <a href="{{ route('backend.user.index') }}" class="btn btn-secondary">Kembali</a>
+                        </div>
+                    </div>
 
-                                    @error('password')
-                                        <span class="invalid-feedback alert-danger" role="alert">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-    <label>Konfirmasi Password</label>
-    <input type="password"
-        name="password_confirmation"
-        class="form-control"
-        placeholder="Konfirmasi Password">
-</div>
+                </form>
 
-</div> <!-- col-md-8 -->
-</div> <!-- row -->
-
-</div> <!-- card-body -->
-
-<div class="border-top">
-    <div class="card-body">
-        <button type="submit" class="btn btn-primary">
-            Simpan
-        </button>
-
-        <a href="{{ route('backend.user.index') }}" class="btn btn-secondary">
-            Kembali
-        </a>
+            </div>
+        </div>
     </div>
-</div>
-
-</form>
-
-</div>
-</div>
-</div>
 </div>
 
 <!-- contentAkhir -->
 
 <script>
-    function previewFoto() {
-        const foto = document.querySelector('input[name="foto"]');
-        const preview = document.querySelector('.foto-preview');
-        const file = foto.files[0];
+function previewFoto() {
+    const foto = document.querySelector('input[name="foto"]');
+    const preview = document.querySelector('.foto-preview');
+    const file = foto.files[0];
 
-        if (!file) {
-            preview.style.display = 'none';
-            preview.removeAttribute('src');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+    if (!file) {
+        return;
     }
 
-    function hanyaAngka(event) {
-        const charCode = event.which ? event.which : event.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        return true;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function hanyaAngka(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
     }
+    return true;
+}
 </script>
 @endsection

@@ -6,7 +6,7 @@ class ImageHelper
 {
    public static function uploadAndResize($file, $directory, $fileName, $width = null, $height = null)
 {
-    $destinationPath = public_path($directory);
+    $destinationPath = storage_path('app/' . $directory);
 
     // Buat folder jika belum ada
     if (!file_exists($destinationPath)) {
