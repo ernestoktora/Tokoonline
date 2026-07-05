@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Kategori;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,21 +14,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       User::create([
-            'name' => 'Tomokazu',
-            'email' => 'admin@admin.com',
+        User::create([
+            'nama' => 'Administrator',
+            'email' => 'admin@tomksyshop.com',
             'role' => '1',
             'status' => 1,
             'hp' => '0812345678901',
             'password' => bcrypt('P@55word'),
         ]);
-            User::create([
-                'name' => 'Sopian Aji',
-                'email' => 'sopianaji@gmail.com',
-                'role' => '0',
-                'status' => 1,
-                'hp' => '081234567892',
-                'password' => bcrypt('P@55word'),
-            ]);
+
+        User::create([
+            'nama' => 'Sopian Aji',
+            'email' => 'sopianaji@gmail.com',
+            'role' => '0',
+            'status' => 1,
+            'hp' => '081234567892',
+            'password' => bcrypt('P@55word'),
+        ]);
+
+        Kategori::create(['nama_kategori' => 'Brownies']);
+        Kategori::create(['nama_kategori' => 'Combro']);
+        Kategori::create(['nama_kategori' => 'Dawet']);
+        Kategori::create(['nama_kategori' => 'Mochi']);
+        Kategori::create(['nama_kategori' => 'Wingko']);
     }
 }
