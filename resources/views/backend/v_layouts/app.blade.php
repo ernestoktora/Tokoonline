@@ -188,7 +188,8 @@
         @csrf
     </form>
 
-    <script src="{{ asset('sweetalert/sweetalert2.all.min.js') }}"></script>
+    <!-- Menggunakan CDN SweetAlert2 karena file lokal tidak ditemukan -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- konfirmasi success-->
     @if (session('success'))
@@ -201,6 +202,18 @@
         </script>
     @endif
     <!-- konfirmasi success End-->
+
+    <!-- konfirmasi error-->
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}"
+            });
+        </script>
+    @endif
+    <!-- konfirmasi error End-->
 
     <script type="text/javascript">
         //Konfirmasi delete
