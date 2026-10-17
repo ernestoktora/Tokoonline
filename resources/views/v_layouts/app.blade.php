@@ -33,6 +33,8 @@
     @yield('content')
 
     <!-- jQuery Plugins -->
+
+    <!-- jQuery Plugins -->
     <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('frontend/js/slick.min.js') }}"></script>
